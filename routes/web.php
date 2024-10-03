@@ -18,5 +18,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+//Юзеры
 Route::post('user/login', [UserController::class, 'login'])->name('user.login');
+Route::post('user/register', [UserController::class, 'register'])->name('user.register');
+
+Route::get('user/login', function () {
+    return view('user.login');
+});
+Route::get('user/register', function () {
+    return view('user.register');
+});
+
 
