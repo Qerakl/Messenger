@@ -3,7 +3,7 @@
 @section('title', 'Регистрация')
 
 @section('content')
-    <form action="{{route('user.login')}}" method="POST">
+    <form action="{{route('user.register')}}" method="POST">
         @csrf
         <input type="text" name="name" placeholder="Имя"><br>
         <input type="email" name="email" placeholder="Почта"><br>
