@@ -13,14 +13,12 @@ class UserController extends Controller
 
     }
     public function login(Request $request){
-        if(Auth::check()){
-            return redirect('/');
-        }
         $validated = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
-        if(Auth::attempt(['email' => $validated['email'], 'password' => $validated['password']])){
+
+        if(Auth::attempt($validated)){
             $user = User::where('email', $validated['email'])->first();
             Auth::login($user);
             return redirect('/');
@@ -28,19 +26,18 @@ class UserController extends Controller
         return back()->withErrors(['email' => 'Неверный логин или пароль']);
     }
     public function register(Request $request){
-        if(Auth::check()){
-            return redirect('/');
-        }
         $validated = $request->validate([
             'name' => 'required|min:3|max:20',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:4|max:255',
         ]);
+
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
         ]);
+
         Auth::login($user);
         return redirect('/');
     }
