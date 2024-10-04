@@ -31,4 +31,8 @@ Route::middleware('guest')->group(function () {
     });
 });
 
+Route::middleware('auth')->group(function () {
+    Route::get('user/profile', [UserController::class, 'profile'])->name('user.profile');
+});
+
 
