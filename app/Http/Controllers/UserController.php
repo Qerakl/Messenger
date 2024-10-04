@@ -43,10 +43,10 @@ class UserController extends Controller
     }
     public function logout(){
         Auth::logout();
-        return redirect('users/login');
+        return redirect('user/login');
     }
     public function profile(){
         $user = User::find(Auth::id());
-        return view('users.profile', compact('user'));
+        return view('user.profile', compact('user'));
     }
 }
