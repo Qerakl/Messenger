@@ -50,4 +50,38 @@ class UserController extends Controller
         $user = User::find(Auth::id());
         return view('user.profile', compact('user'));
     }
+    public function show($id)
+    {
+        $user = User::find($id);
+        return view('user.show', compact('user'));
+    }
+    public function edit($id){
+        $user = User::find($id);
+        return view('user.edit', compact('user'));
+    }
+
+    public function update(Request $request){
+        $validated = $request->validate([
+            'name' => 'required|min:3|max:20',
+            'email' => 'required|email|unique:users,email,'.Auth::id(),
+        ]);
+
+        $user = User::update([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+        ]);
+
+        $user = User::find(Auth::id());
+        session()->regenerate();
+        Auth::login($user);
+
+        return back();
+    }
+    public function updatePassword(Request $request){
+
+    }
+    public function delete(Request $request){
+
+    }
+
 }

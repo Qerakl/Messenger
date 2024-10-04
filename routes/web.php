@@ -35,6 +35,11 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('user/profile', [UserController::class, 'profile'])->name('user.profile');
     Route::get('user/logout', [UserController::class, 'logout'])->name('user.logout');
+    Route::get('user/edit/{id}', [UserController::class, 'edit'])->name('user.edit');
+    Route::get('user/show/{id}', [UserController::class, 'show'])->name('user.show');
+
+    Route::put('user/update', [UserController::class, 'update'])->name('user.update');
+    Route::delete('user/delete/{id}', [UserController::class, 'destroy'])->name('user.destroy');
 });
 
 
