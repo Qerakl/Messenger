@@ -12,6 +12,10 @@
 <body>
     <header>
         <a href="/">Главная страница</a>
+        @if(Auth::check())
+            <a href="{{route('user.logout' )}}">Выйти</a>
+
+        @endif
     </header>
     <main>
         @yield('content')

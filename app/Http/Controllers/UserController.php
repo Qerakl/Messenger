@@ -43,7 +43,8 @@ class UserController extends Controller
     }
     public function logout(){
         Auth::logout();
-        return redirect('user/login');
+        session()->regenerate();
+        return redirect('/');
     }
     public function profile(){
         $user = User::find(Auth::id());

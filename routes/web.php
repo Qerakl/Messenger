@@ -29,10 +29,12 @@ Route::middleware('guest')->group(function () {
     Route::get('user/register', function () {
         return view('user.register');
     });
+
 });
 
 Route::middleware('auth')->group(function () {
     Route::get('user/profile', [UserController::class, 'profile'])->name('user.profile');
+    Route::get('user/logout', [UserController::class, 'logout'])->name('user.logout');
 });
 
 
