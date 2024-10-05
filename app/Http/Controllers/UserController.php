@@ -66,7 +66,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email,'.Auth::id(),
         ]);
 
-        $user = User::update([
+        $user = User::where('id', Auth::id())->update([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
         ]);
@@ -75,7 +75,7 @@ class UserController extends Controller
         session()->regenerate();
         Auth::login($user);
 
-        return back();
+        return redirect()->route('user.profile');
     }
     public function updatePassword(Request $request){
 
