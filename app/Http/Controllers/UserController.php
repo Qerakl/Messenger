@@ -66,6 +66,14 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email,'.Auth::id(),
         ]);
 
+        if(!empty($request->avatar)){
+            $avatar = $request->file('avatar')->store('public');
+            $avatar = $request->avatar->hashName();
+            User::where('id', Auth::id())->update([
+                'avatar' => $avatar,
+            ]);
+        }
+
         $user = User::where('id', Auth::id())->update([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
