@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -65,8 +66,11 @@ class UserController extends Controller
             'name' => 'required|min:3|max:20',
             'email' => 'required|email|unique:users,email,'.Auth::id(),
         ]);
-
+        $user = User::find(Auth::id());
         if(!empty($request->avatar)){
+            if($user->avatar !== 'avatar.png'){
+                Storage::delete('public/'. $user->avatar);
+            }
             $avatar = $request->file('avatar')->store('public');
             $avatar = $request->avatar->hashName();
             User::where('id', Auth::id())->update([
@@ -74,12 +78,11 @@ class UserController extends Controller
             ]);
         }
 
-        $user = User::where('id', Auth::id())->update([
+        User::where('id', Auth::id())->update([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
         ]);
 
-        $user = User::find(Auth::id());
         session()->regenerate();
         Auth::login($user);
 
@@ -88,8 +91,17 @@ class UserController extends Controller
     public function updatePassword(Request $request){
 
     }
-    public function delete(Request $request){
-
+    public function destroy(Request $request){
+        $user = User::find(Auth::id());
+        Auth::logout();
+        session()->regenerate();
+        if($user->avatar === 'avatar.png'){
+            User::destroy($user->id);
+            return redirect()->route('user.login');
+        }
+        Storage::delete('public/'.$user->avatar);
+        User::destroy($user->id);
+        return redirect()->route('user.login');
     }
 
 }

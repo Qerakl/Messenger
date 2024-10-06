@@ -20,5 +20,10 @@
         <input type="file" name="avatar"><br>
         <button type="submit">Обновить данные</button>
     </form>
+    <form action="{{route('user.destroy')}}" method="POST">
+        @csrf
+        @method('DELETE')
+        <button type="submit">Удалить аккаунт</button>
+    </form>
     <a href="#">Обновить пароль</a>
 @endsection
