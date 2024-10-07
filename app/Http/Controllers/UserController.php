@@ -93,14 +93,14 @@ class UserController extends Controller
     }
     public function destroy(Request $request){
         $user = User::find(Auth::id());
+
+        if($user->avatar != 'avatar.png'){
+            Storage::delete('public/'.$user->avatar);
+        }
+
+        User::destroy($user->id);
         Auth::logout();
         session()->regenerate();
-        if($user->avatar === 'avatar.png'){
-            User::destroy($user->id);
-            return redirect()->route('user.login');
-        }
-        Storage::delete('public/'.$user->avatar);
-        User::destroy($user->id);
         return redirect()->route('user.login');
     }
 
